@@ -3,9 +3,12 @@
 #include <cctype>
 #include <algorithm>
 #include "util.h"
+#include <set>
+#include <string>
 
 using namespace std;
-std::string convToLower(std::string src)
+
+string convToLower(string src)
 {
     std::transform(src.begin(), src.end(), src.begin(), ::tolower);
     return src;
@@ -13,18 +16,34 @@ std::string convToLower(std::string src)
 
 /** Complete the code to convert a string containing a rawWord
     to a set of words based on the criteria given in the assignment **/
-std::set<std::string> parseStringToWords(string rawWords)
+set<string> parseStringToWords(string rawWords)
 {
+  set<string> return_set;
+  string word = "";
 
+  // convert to lowercase
+  rawWords = convToLower(rawWords);
 
+  for (size_t i = 0; i < rawWords.size(); i++) {
+      char c = rawWords[i];
+      if (isalnum(c)) {
+          // add letters or numbers to current word
+          word += c;
+      } else {
+          // non-alphanumeric = word boundary
+          if (word.size() >= 2) {
+              return_set.insert(word);
+          }
+          word = "";
+      }
+  }
 
+  // check the final word
+  if (word.size() >= 2) {
+      return_set.insert(word);
+  }
 
-
-
-
-
-
-
+  return return_set;
 }
 
 /**************************************************
